@@ -1,5 +1,8 @@
 ﻿using DataLayer.ADO;
 
 AdoConnection connection = new();
-connection.CreateDataBase();
+connection.CreateTables();
+
+
+
 Console.ReadKey();
