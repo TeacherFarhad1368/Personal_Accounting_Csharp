@@ -3,6 +3,7 @@ namespace DataLayer.ADO;
 public class AdoConnection
 {
     string connectionString = "Server=.;Integrated Security=true;";
+    string connectionString2 = "Server=.;Database=AccountingDB;Integrated Security=true;";
     string databaseName = "AccountingDB";
     string useMyDataBase = $"Use AccountingDB";
     string createPersonCategoryTable = "IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'PersonCategories' AND type = 'U') BEGIN Create Table PersonCategories ( Id int Not Null Primary Key Identity, Title Nvarchar(250) Not NULL ); Create Unique Index PersonCategory_Title_Index  On PersonCategories(Title); END";
@@ -61,6 +62,24 @@ public class AdoConnection
         }
         catch 
         {
+            return false;
+        }
+    }
+    public bool CreatePersonCategory(string title)
+    {
+        try
+        {
+            SqlConnection connection = new SqlConnection(connectionString2);
+            connection.Open();
+            string query = $"Insert Into PersonCategories(Title) Values ('{title}')";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.ExecuteNonQuery();
+            Console.WriteLine("Success");
+            return true;
+        }
+        catch (Exception x)
+        {
+            Console.WriteLine(x.Message);
             return false;
         }
     }

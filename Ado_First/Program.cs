@@ -1,7 +1,7 @@
 ﻿using DataLayer.ADO;
 
 AdoConnection connection = new();
-connection.CreateTables();
+connection.CreatePersonCategory("Doostan");
 
 
 
