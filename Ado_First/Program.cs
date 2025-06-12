@@ -1,8 +1,7 @@
-﻿using DataLayer.ADO;
+﻿using Ado_First.Classes;
+using DataLayer.ADO;
 
-AdoConnection connection = new();
-connection.CreatePersonCategory("Doostan");
-
-
+ConsoleService console = new();
+console.First();
 
 Console.ReadKey();
