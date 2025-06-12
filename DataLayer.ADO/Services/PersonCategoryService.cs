@@ -45,4 +45,24 @@ public class PersonCategoryService
             return true;
         }
     }
+    public void GetById(int id)
+    {
+        try
+        {
+            SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
+            connection.Open();
+            string query = $"SELECT * FROM PersonCategories WHERE [Id] = {id}";
+            SqlCommand command = new SqlCommand(query, connection);
+            using(SqlDataReader reader = command.ExecuteReader())
+                if (reader.Read())
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        Console.WriteLine($"{reader.GetName(i)} : {reader[reader.GetName(i)]}");
+                else
+                    Console.WriteLine($"Person Category With Id : {id} not found");
+        }
+        catch (Exception x)
+        {
+            Console.WriteLine(x.Message);
+        }
+    }
 }
