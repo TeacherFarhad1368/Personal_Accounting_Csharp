@@ -2,6 +2,6 @@
 using DataLayer.ADO;
 
 ConsoleService console = new();
-console.Second();
+console.Third();
 
 Console.ReadKey();

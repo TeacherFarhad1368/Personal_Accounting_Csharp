@@ -4,9 +4,9 @@ namespace DataLayer.ADO.Services;
 public class PersonCategoryService
 {
 
-    public bool CreatePersonCategory(string title)
+    public bool Insert(string title)
     {
-        if (ExistPersonCategory(title))
+        if (Exist(title))
         {
             Console.WriteLine($"{title} is Existed");
             return false;
@@ -28,7 +28,7 @@ public class PersonCategoryService
                 return false;
             }
     }
-    public bool ExistPersonCategory(string title)
+    public bool Exist(string title)
     {
         try
         {
@@ -59,6 +59,35 @@ public class PersonCategoryService
                         Console.WriteLine($"{reader.GetName(i)} : {reader[reader.GetName(i)]}");
                 else
                     Console.WriteLine($"Person Category With Id : {id} not found");
+        }
+        catch (Exception x)
+        {
+            Console.WriteLine(x.Message);
+        }
+    }
+    public void GetAll()
+    {
+        try
+        {
+            SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
+            connection.Open();
+            string query = $"SELECT * FROM PersonCategories";
+            SqlCommand command = new SqlCommand(query, connection);
+            using (SqlDataReader reader = command.ExecuteReader())
+                if (reader.HasRows)
+                {
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        Console.Write($"{reader.GetName(i)} \t");
+                    Console.WriteLine();
+                    while(reader.Read())
+                    {
+                        for (int i = 0; i < reader.FieldCount; i++)
+                            Console.Write($"{reader[reader.GetName(i)]} \t");
+                        Console.WriteLine();
+                    }
+                }
+                else
+                    Console.WriteLine($"No Person Category found");
         }
         catch (Exception x)
         {

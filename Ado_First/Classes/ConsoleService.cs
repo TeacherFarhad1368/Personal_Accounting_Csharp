@@ -10,12 +10,16 @@ internal class ConsoleService
     {
         Console.WriteLine("Please Insert Person Category Title");
         string title = Console.ReadLine();
-        personCategoryService.CreatePersonCategory(title);
+        personCategoryService.Insert(title);
     }
     public void Second()
     {
         Console.WriteLine("Please Insert Person Category Id");
         int id = Convert.ToInt32(Console.ReadLine());
         personCategoryService.GetById(id);  
+    }
+    public void Third()
+    {
+        personCategoryService.GetAll();
     }
 }
