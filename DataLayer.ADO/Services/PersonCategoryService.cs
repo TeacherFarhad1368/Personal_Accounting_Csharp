@@ -3,7 +3,6 @@
 namespace DataLayer.ADO.Services;
 public class PersonCategoryService
 {
-
     public bool Insert(string title)
     {
         if (Exist(title))
@@ -35,6 +34,23 @@ public class PersonCategoryService
             SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
             connection.Open();
             string query = $"SELECT COUNT(*) FROM PersonCategories WHERE [Title] = '{title}'";
+            SqlCommand command = new SqlCommand(query, connection);
+            int count = Convert.ToInt32(command.ExecuteScalar());
+            return count > 0;
+        }
+        catch (Exception x)
+        {
+            Console.WriteLine(x.Message);
+            return true;
+        }
+    }
+    public bool ExistById(int id)
+    {
+        try
+        {
+            SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
+            connection.Open();
+            string query = $"SELECT COUNT(*) FROM PersonCategories WHERE [Id] = {id}";
             SqlCommand command = new SqlCommand(query, connection);
             int count = Convert.ToInt32(command.ExecuteScalar());
             return count > 0;
@@ -93,5 +109,36 @@ public class PersonCategoryService
         {
             Console.WriteLine(x.Message);
         }
+    }
+    public bool Edit(int id,string title)
+    {
+        if (ExistById(id))
+        {
+            try
+            {
+                SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
+                connection.Open();
+                string query = $"UPDATE PersonCategories SET Title = '{title}' Where Id = {id}";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.ExecuteNonQuery();
+                Console.WriteLine("Update Data Successfully");
+                return true;
+            }
+            catch (Exception x)
+            {
+                Console.WriteLine(x.Message);
+                return false;
+            }
+           
+        }
+        else
+        {
+            Console.WriteLine($"Person Category By Id :  {id} is Not FOUND");
+            return false;
+        }
+    }
+    public bool Delete(int id)
+    {
+        return false;
     }
 }

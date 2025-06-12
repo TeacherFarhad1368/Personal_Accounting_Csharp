@@ -22,4 +22,12 @@ internal class ConsoleService
     {
         personCategoryService.GetAll();
     }
+    public void Forth()
+    {
+        Console.WriteLine("Please Insert Id");
+        int id = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Please Insert new Title");
+        string title = Console.ReadLine();
+        personCategoryService.Edit(id, title);
+    }
 }
