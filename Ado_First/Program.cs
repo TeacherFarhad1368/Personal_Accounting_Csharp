@@ -1,7 +1,11 @@
 ﻿using Ado_First.Classes;
-using DataLayer.ADO;
-
 ConsoleService console = new();
+bool ok = true;
 console.Third();
-console.Forth();
+while (ok)
+{
+    console.Forth();
+    console.Third();
+    ok = console.Again();
+}
 Console.ReadKey();

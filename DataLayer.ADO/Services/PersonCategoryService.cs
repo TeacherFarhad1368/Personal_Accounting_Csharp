@@ -5,7 +5,7 @@ public class PersonCategoryService
 {
     public bool Insert(string title)
     {
-        if (Exist(title))
+        if (ExistForInsert(title))
         {
             Console.WriteLine($"{title} is Existed");
             return false;
@@ -27,13 +27,30 @@ public class PersonCategoryService
                 return false;
             }
     }
-    public bool Exist(string title)
+    public bool ExistForInsert(string title)
     {
         try
         {
             SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
             connection.Open();
             string query = $"SELECT COUNT(*) FROM PersonCategories WHERE [Title] = '{title}'";
+            SqlCommand command = new SqlCommand(query, connection);
+            int count = Convert.ToInt32(command.ExecuteScalar());
+            return count > 0;
+        }
+        catch (Exception x)
+        {
+            Console.WriteLine(x.Message);
+            return true;
+        }
+    }
+    public bool ExistForEdit(int id,string title)
+    {
+        try
+        {
+            SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
+            connection.Open();
+            string query = $"SELECT COUNT(*) FROM PersonCategories WHERE [Title] = '{title}' And [Id] <> {id}";
             SqlCommand command = new SqlCommand(query, connection);
             int count = Convert.ToInt32(command.ExecuteScalar());
             return count > 0;
@@ -112,22 +129,34 @@ public class PersonCategoryService
     }
     public bool Edit(int id,string title)
     {
+        // چک کردن آی دی
+        // چک کردن PersonCategory_Title_Index
+
         if (ExistById(id))
         {
-            try
+            if (ExistForEdit(id,title))
             {
-                SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
-                connection.Open();
-                string query = $"UPDATE PersonCategories SET Title = '{title}' Where Id = {id}";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.ExecuteNonQuery();
-                Console.WriteLine("Update Data Successfully");
-                return true;
-            }
-            catch (Exception x)
-            {
-                Console.WriteLine(x.Message);
+                Console.WriteLine($"{title} is Existed");
                 return false;
+            }
+            else
+            {
+
+                try
+                {
+                    SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
+                    connection.Open();
+                    string query = $"UPDATE PersonCategories SET Title = '{title}' Where Id = {id}";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.ExecuteNonQuery();
+                    Console.WriteLine("Update Data Successfully");
+                    return true;
+                }
+                catch (Exception x)
+                {
+                    Console.WriteLine(x.Message);
+                    return false;
+                }
             }
            
         }

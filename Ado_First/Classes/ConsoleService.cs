@@ -30,4 +30,10 @@ internal class ConsoleService
         string title = Console.ReadLine();
         personCategoryService.Edit(id, title);
     }
+
+    internal bool Again()
+    {
+        Console.WriteLine("Mikhahi Edame Bedi ? y/n");
+        return Console.ReadLine().ToLower() == "y";
+    }
 }
