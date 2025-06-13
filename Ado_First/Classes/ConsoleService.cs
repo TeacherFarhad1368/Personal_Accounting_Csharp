@@ -30,7 +30,12 @@ internal class ConsoleService
         string title = Console.ReadLine();
         personCategoryService.Edit(id, title);
     }
-
+    public void Fived()
+    {
+        Console.WriteLine("Please Insert Id For Delete");
+        int id = Convert.ToInt32(Console.ReadLine());
+        personCategoryService.Delete(id);   
+    }
     internal bool Again()
     {
         Console.WriteLine("Mikhahi Edame Bedi ? y/n");

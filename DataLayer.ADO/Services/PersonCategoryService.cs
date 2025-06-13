@@ -168,6 +168,26 @@ public class PersonCategoryService
     }
     public bool Delete(int id)
     {
-        return false;
+        if (ExistById(id))
+            try
+            {
+                SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
+                connection.Open();
+                string query = $"DELETE FROM PersonCategories Where Id = {id}";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.ExecuteNonQuery();
+                Console.WriteLine("DELETED Data Successfully");
+                return true;
+            }
+            catch (Exception x)
+            {
+                Console.WriteLine(x.Message);
+                return false;
+            }
+        else
+        {
+            Console.WriteLine($"Person Category By Id :  {id} is Not FOUND");
+            return false;
+        }
     }
 }

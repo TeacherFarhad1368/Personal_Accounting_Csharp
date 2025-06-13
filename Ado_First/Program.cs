@@ -4,7 +4,7 @@ bool ok = true;
 console.Third();
 while (ok)
 {
-    console.Forth();
+    console.Fived();
     console.Third();
     ok = console.Again();
 }
