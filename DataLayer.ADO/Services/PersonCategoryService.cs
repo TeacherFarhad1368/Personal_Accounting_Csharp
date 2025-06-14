@@ -1,13 +1,25 @@
-﻿using System.Data.SqlClient;
+﻿using Accounting.Models.PersonCategoryModels;
+using System.Data.SqlClient;
 
 namespace DataLayer.ADO.Services;
 public class PersonCategoryService
 {
-    public bool Insert(string title)
+    public bool Insert(InsertPersonCategory model)
     {
-        if (ExistForInsert(title))
+        if (string.IsNullOrEmpty(model.Title))
         {
-            Console.WriteLine($"{title} is Existed");
+            Console.WriteLine("Title Nemitoone Khali Bashe");
+            return false;
+        }
+        else if (model.Title.Length > 250)
+        {
+            Console.WriteLine("Maximom Length For Title is 255 charecter");
+            return false;
+        }
+        else
+        if (ExistForInsert(model.Title))
+        {
+            Console.WriteLine($"{model.Title} is Existed");
             return false;
         }
         else
@@ -15,7 +27,7 @@ public class PersonCategoryService
             {
                 SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
                 connection.Open();
-                string query = $"Insert Into PersonCategories(Title) Values ('{title}')";
+                string query = $"Insert Into PersonCategories(Title) Values ('{model.Title}')";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.ExecuteNonQuery();
                 Console.WriteLine("Success");

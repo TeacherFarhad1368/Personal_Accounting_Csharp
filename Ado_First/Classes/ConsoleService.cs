@@ -1,29 +1,36 @@
-﻿using DataLayer.ADO;
+﻿using Accounting.Models.PersonCategoryModels;
+using DataLayer.ADO;
 using DataLayer.ADO.Services;
+using System.Reflection;
 namespace Ado_First.Classes;
 internal class ConsoleService
 {
     List<string> Actions = new List<string>()
     {
-        "(Get All PersonCategory : gapc )",
-        "(Get By Id PersonCategory : gipc )",
-        "(Create PersonCategory : cpc )",
-        "(Edit PersonCategory : epc )",
-        "(Delete PersonCategory : dpc )",
-        "Close Application : end"
+        "(Get All Person Category : gapc )",
+        "(Get By Id Person Category : gipc )",
+        "(Create Person Category : cpc )",
+        "(Edit Person Category : epc )",
+        "(Delete Person Category : dpc )",
+        "(Close Application : end)",
+        "(Clear Console : clear)",
     };
     public string Action;
     AdoConnection AdoConnection = new();
     PersonCategoryService personCategoryService = new();
-    public void CreatePersonCategory()
+    internal void CreatePersonCategory()
     {
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("Please Insert Person Category Title");
         string title = Console.ReadLine();
-        personCategoryService.Insert(title);
+        InsertPersonCategory model = new InsertPersonCategory()
+        {
+            Title = title
+        };
+        personCategoryService.Insert(model);
         RunApplication();
     }
-    public void GetPersonCategoryById()
+    internal void GetPersonCategoryById()
     {
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("Please Insert Person Category Id");
@@ -31,13 +38,13 @@ internal class ConsoleService
         personCategoryService.GetById(id);
         RunApplication();
     }
-    public void GetAllPersonCategory()
+    internal void GetAllPersonCategory()
     {
         Console.ForegroundColor = ConsoleColor.Blue;
         personCategoryService.GetAll();
         RunApplication();
     }
-    public void EditPersonCategory()
+    internal void EditPersonCategory()
     {
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("Please Insert Id");
@@ -47,7 +54,7 @@ internal class ConsoleService
         personCategoryService.Edit(id, title);
         RunApplication();
     }
-    public void DeletePersonCategory()
+    internal void DeletePersonCategory()
     {
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("Please Insert Id For Delete");
@@ -58,7 +65,6 @@ internal class ConsoleService
     internal void RunApplication()
     {
         Console.ResetColor();
-        Console.WriteLine("Chi Kar Mikhay Bokoni ?");
         foreach(var item in Actions)
             Console.WriteLine(item);
         string action = Console.ReadLine();
@@ -81,6 +87,10 @@ internal class ConsoleService
                 break;
             case "end":
                 Console.ReadKey();
+                break;
+            case "clear":
+                Console.Clear();
+                RunApplication();
                 break;
             default:
                 Console.ForegroundColor = ConsoleColor.Blue;
