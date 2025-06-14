@@ -2,6 +2,7 @@
 using DataLayer.ADO;
 using DataLayer.ADO.Services;
 using System.Reflection;
+using System.Reflection.PortableExecutable;
 namespace Ado_First.Classes;
 internal class ConsoleService
 {
@@ -35,23 +36,28 @@ internal class ConsoleService
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("Please Insert Person Category Id");
         int id = Convert.ToInt32(Console.ReadLine());
-        personCategoryService.GetById(id);
+        var model = personCategoryService.GetById(id);
+        Console.WriteLine($"{model.Id} \t {model.Title}");
         RunApplication();
     }
     internal void GetAllPersonCategory()
     {
         Console.ForegroundColor = ConsoleColor.Blue;
-        personCategoryService.GetAll();
+        var model = personCategoryService.GetAll();
+        Console.WriteLine($"Id \t Title");
+        foreach (var item in model)
+            Console.WriteLine($"{item.Id} \t {item.Title}");
         RunApplication();
     }
     internal void EditPersonCategory()
     {
+        EditPersonCategoty model = new EditPersonCategoty();
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("Please Insert Id");
-        int id = Convert.ToInt32(Console.ReadLine());
+        model.Id = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Please Insert new Title");
-        string title = Console.ReadLine();
-        personCategoryService.Edit(id, title);
+        model.Title = Console.ReadLine();
+        personCategoryService.Edit(model);
         RunApplication();
     }
     internal void DeletePersonCategory()
