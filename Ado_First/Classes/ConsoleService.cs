@@ -8,11 +8,11 @@ internal class ConsoleService
 {
     List<string> Actions = new List<string>()
     {
-        "(Get All Person Category : gapc )",
-        "(Get By Id Person Category : gipc )",
-        "(Create Person Category : cpc )",
-        "(Edit Person Category : epc )",
-        "(Delete Person Category : dpc )",
+        "(Get All PC : gapc )",
+        "(Get By Id PC : gipc )",
+        "(Create PC : cpc )",
+        "(Edit PC : epc )",
+        "(Delete PC : dpc )",
         "(Close Application : end)",
         "(Clear Console : clear)",
     };
@@ -28,8 +28,10 @@ internal class ConsoleService
         {
             Title = title
         };
-        personCategoryService.Insert(model);
-        RunApplication();
+        var res = personCategoryService.Insert(model);
+        if(res.Success) Console.WriteLine("Success");
+        else Console.WriteLine(res.Message);
+            RunApplication();
     }
     internal void GetPersonCategoryById()
     {
@@ -57,7 +59,9 @@ internal class ConsoleService
         model.Id = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Please Insert new Title");
         model.Title = Console.ReadLine();
-        personCategoryService.Edit(model);
+         var res =personCategoryService.Edit(model);
+        if (res.Success) Console.WriteLine("Success");
+        else Console.WriteLine(res.Message);
         RunApplication();
     }
     internal void DeletePersonCategory()
@@ -65,14 +69,15 @@ internal class ConsoleService
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("Please Insert Id For Delete");
         int id = Convert.ToInt32(Console.ReadLine());
-        personCategoryService.Delete(id);
+        var res = personCategoryService.Delete(id);
+        if (res.Success) Console.WriteLine("Success");
+        else Console.WriteLine(res.Message);
         RunApplication();
     }
     internal void RunApplication()
     {
         Console.ResetColor();
-        foreach(var item in Actions)
-            Console.WriteLine(item);
+        Console.WriteLine(string.Join(" - ", Actions));
         string action = Console.ReadLine();
         switch (action.ToLower())
         {

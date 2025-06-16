@@ -1,27 +1,16 @@
 ﻿using Accounting.Models.PersonCategoryModels;
 using System.Data.SqlClient;
+using Utilities.Opeartions;
 
 namespace DataLayer.ADO.Services;
 public class PersonCategoryService
 {
-    public bool Insert(InsertPersonCategory model)
+    public OperationResult Insert(InsertPersonCategory model)
     {
-        if (string.IsNullOrEmpty(model.Title))
-        {
-            Console.WriteLine("Title Nemitoone Khali Bashe");
-            return false;
-        }
-        else if (model.Title.Length > 250)
-        {
-            Console.WriteLine("Maximom Length For Title is 255 charecter");
-            return false;
-        }
+        if (string.IsNullOrEmpty(model.Title)) return OperationResult.Faild("Title Nemitoone Khali Bashe");
+        else if (model.Title.Length > 250) return OperationResult.Faild("Maximom Length For Title is 255 charecter");
         else
-        if (ExistForInsert(model.Title))
-        {
-            Console.WriteLine($"{model.Title} is Existed");
-            return false;
-        }
+        if (ExistForInsert(model.Title)) return OperationResult.Faild($"{model.Title} is Existed");
         else
             try
             {
@@ -30,13 +19,11 @@ public class PersonCategoryService
                 string query = $"Insert Into PersonCategories(Title) Values ('{model.Title}')";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.ExecuteNonQuery();
-                Console.WriteLine("Success");
-                return true;
+                return OperationResult.Succeded();
             }
             catch (Exception x)
             {
-                Console.WriteLine(x.Message);
-                return false;
+                return OperationResult.Faild(x.Message);
             }
     }
     public bool ExistForInsert(string title)
@@ -52,7 +39,6 @@ public class PersonCategoryService
         }
         catch (Exception x)
         {
-            Console.WriteLine(x.Message);
             return true;
         }
     }
@@ -69,7 +55,6 @@ public class PersonCategoryService
         }
         catch (Exception x)
         {
-            Console.WriteLine(x.Message);
             return true;
         }
     }
@@ -86,7 +71,6 @@ public class PersonCategoryService
         }
         catch (Exception x)
         {
-            Console.WriteLine(x.Message);
             return true;
         }
     }
@@ -107,15 +91,9 @@ public class PersonCategoryService
                     return model;
                 }
             return null;
-                        //if (reader.Read())
-                        //    for (int i = 0; i < reader.FieldCount; i++)
-                        //        Console.WriteLine($"{reader.GetName(i)} : {reader[reader.GetName(i)]}");
-                        //else
-                        //    Console.WriteLine($"Person Category With Id : {id} not found");
         }
         catch (Exception x)
         {
-            //Console.WriteLine(x.Message);
             return null;
         }
     }
@@ -131,7 +109,6 @@ public class PersonCategoryService
             using (SqlDataReader reader = command.ExecuteReader())
                 if (reader.HasRows)
                 {
-                    Console.WriteLine();
                     while(reader.Read())
                     {
                         PersonCategoryQueryModel personModel = new()
@@ -140,40 +117,23 @@ public class PersonCategoryService
                             Title = reader["Title"].ToString()
                         };
                         model.Add(personModel);
-                        //for (int i = 0; i < reader.FieldCount; i++)
-                        //    Console.Write($"{reader[reader.GetName(i)]} \t");
-                        //Console.WriteLine();
                     }
                 }
-            //Console.WriteLine($"No Person Category found");
             return model;
         }
         catch (Exception x)
         {
             return null;
-            //Console.WriteLine(x.Message);
         }
     }
-    public bool Edit(EditPersonCategoty model)
+    public OperationResult Edit(EditPersonCategoty model)
     {
-        if (string.IsNullOrEmpty(model.Title))
-        {
-            Console.WriteLine("Title Nemitoone Khali Bashe");
-            return false;
-        }
-        else if (model.Title.Length > 250)
-        {
-            Console.WriteLine("Maximom Length For Title is 255 charecter");
-            return false;
-        }
+        if (string.IsNullOrEmpty(model.Title)) return OperationResult.Faild("Title Nemitoone Khali Bashe");
+        else if (model.Title.Length > 250) return OperationResult.Faild("Maximom Length For Title is 255 charecter");
         else
           if (ExistById(model.Id))
           {
-            if (ExistForEdit(model))
-            {
-                Console.WriteLine($"{model.Title} is Existed");
-                return false;
-            }
+            if (ExistForEdit(model)) return OperationResult.Faild($"{model.Title} is Existed");
             else
             {
 
@@ -184,24 +144,21 @@ public class PersonCategoryService
                     string query = $"UPDATE PersonCategories SET Title = '{model.Title}' Where Id = {model.Id}";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.ExecuteNonQuery();
-                    Console.WriteLine("Update Data Successfully");
-                    return true;
+                    return OperationResult.Succeded();
                 }
                 catch (Exception x)
                 {
-                    Console.WriteLine(x.Message);
-                    return false;
+                    return OperationResult.Faild(x.Message);
                 }
             }
            
         }
         else
         {
-            Console.WriteLine($"Person Category By Id :  {model.Id} is Not FOUND");
-            return false;
+            return OperationResult.Faild($"Person Category By Id :  {model.Id} is Not FOUND");
         }
     }
-    public bool Delete(int id)
+    public OperationResult Delete(int id)
     {
         if (ExistById(id))
             try
@@ -211,18 +168,15 @@ public class PersonCategoryService
                 string query = $"DELETE FROM PersonCategories Where Id = {id}";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.ExecuteNonQuery();
-                Console.WriteLine("DELETED Data Successfully");
-                return true;
+                return OperationResult.Succeded();
             }
             catch (Exception x)
             {
-                Console.WriteLine(x.Message);
-                return false;
+                return OperationResult.Faild(x.Message);
             }
         else
         {
-            Console.WriteLine($"Person Category By Id :  {id} is Not FOUND");
-            return false;
+            return OperationResult.Faild($"Person Category By Id :  {id} is Not FOUND");
         }
     }
 }

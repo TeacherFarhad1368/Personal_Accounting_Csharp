@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer.ADO", "DataLayer.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Accounting.Models", "Accounting.Models\Accounting.Models.csproj", "{E9874235-8DFE-4A49-98E0-81421AC42BB0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{86719155-96FB-4524-9700-9B7B746117D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{E9874235-8DFE-4A49-98E0-81421AC42BB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9874235-8DFE-4A49-98E0-81421AC42BB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9874235-8DFE-4A49-98E0-81421AC42BB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86719155-96FB-4524-9700-9B7B746117D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86719155-96FB-4524-9700-9B7B746117D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86719155-96FB-4524-9700-9B7B746117D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86719155-96FB-4524-9700-9B7B746117D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
