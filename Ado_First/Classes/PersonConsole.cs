@@ -2,10 +2,11 @@
 using Accounting.Models.PersonModels;
 using DataLayer.ADO;
 using DataLayer.ADO.Services;
+using System.Data;
 namespace Ado_First.Classes;
 internal partial class ConsoleService
 {
-    PersonService PersonService = new PersonService();
+    PersonService personService = new PersonService();
      public void CreatePerson()
       {
         Console.WriteLine("ba formate zir maghadir ro vared kon");
@@ -31,9 +32,15 @@ internal partial class ConsoleService
                         Convert.ToInt32(strings[1]), 
                         Convert.ToInt32(strings[2])
                         );
-            var res = PersonService.Insert(model);
+            var res = personService.Insert(model);
             if(res.Success) Console.WriteLine("Success");
             Console.WriteLine(res.Message);
         } 
       }
+    public void GetAllPerson()
+    {
+        var table = personService.GetAll();
+        foreach (DataRow row in table.Rows)
+            Console.WriteLine($"{row["Id"]} \t {row["FullName"]} \t {row["Mobile"]} \t {row["Email"]} \t {row["BirthDate"]} \t {row["CreateDate"]}");
+    }
 }

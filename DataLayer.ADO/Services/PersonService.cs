@@ -1,4 +1,5 @@
 ﻿using Accounting.Models.PersonModels;
+using System.Data;
 using System.Data.SqlClient;
 using Utilities.Opeartions;
 
@@ -15,11 +16,21 @@ public class PersonService
                 $"Values ('{model.FullName}','{model.Mobile}','{model.Email}','{model.BirthDate}','{model.PersonCategoryId}')";
             SqlCommand command = new SqlCommand(query, connection);
             command.ExecuteNonQuery();
+            connection.Close();
             return OperationResult.Succeded();
         }
         catch (Exception x)
         {
             return OperationResult.Faild(x.Message);
+        }
+    }
+    public DataTable GetAll()
+    {
+        using (var adapter = new SqlDataAdapter("SELECT * FROM PEOPLE", DataBaseConstant.connectionString2))
+        {
+            DataTable table = new();
+            adapter.Fill(table);
+            return table;   
         }
     }
 }

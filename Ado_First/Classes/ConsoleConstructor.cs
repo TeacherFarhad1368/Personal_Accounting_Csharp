@@ -12,6 +12,7 @@ internal partial class ConsoleService
         "(Edit PC : epc )",
         "(Delete PC : dpc )",
         "(Create Person : cp )",
+        "(Get All Person : gap )",
         "(Close Application : end)",
         "(Clear Console : clear)",
     };
@@ -50,6 +51,9 @@ internal partial class ConsoleService
                 break;
             case "cp":
                 CreatePerson();
+                break;
+            case "gap":
+                GetAllPerson();
                 break;
             default:
                 Console.ForegroundColor = ConsoleColor.Blue;
