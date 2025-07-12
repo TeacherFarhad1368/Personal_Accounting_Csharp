@@ -12,9 +12,18 @@ public class PersonService
         {
             SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
             connection.Open();
-            string query = $"Insert Into People([FullName],[Mobile],[Email],[BirthDate],[PersonCategoryId]) " +
-                $"Values ('{model.FullName}','{model.Mobile}','{model.Email}','{model.BirthDate}','{model.PersonCategoryId}')";
-            SqlCommand command = new SqlCommand(query, connection);
+            string query = $"Insert Into People([FullName],[Mobile]";
+            if(!string.IsNullOrEmpty(model.Email))
+                query = query + $",[Email]";
+            if (model.BirthDate != null)
+                query = query + $",[BirthDate]";
+            query = query + $",[PersonCategoryId]) Values('{model.FullName}', '{model.Mobile}'";
+            if (!string.IsNullOrEmpty(model.Email))
+                query = query + $", '{model.Email}'";
+            if (model.BirthDate != null)
+                query = query + $", '{model.BirthDate}'";
+            query = query + $", '{model.PersonCategoryId}')";
+                    SqlCommand command = new SqlCommand(query, connection);
             command.ExecuteNonQuery();
             connection.Close();
             return OperationResult.Succeded();
@@ -26,7 +35,8 @@ public class PersonService
     }
     public DataTable GetAll()
     {
-        using (var adapter = new SqlDataAdapter("SELECT * FROM PEOPLE", DataBaseConstant.connectionString2))
+        string command = "Select x.Id,x.FullName,x.Mobile,x.Email,x.BirthDate,s.Title As CategoryTitle,x.CreateDate From PersonCategories AS s Inner JOIN People as x ON x.PersonCategoryId = s.Id";
+        using (var adapter = new SqlDataAdapter(command, DataBaseConstant.connectionString2))
         {
             DataTable table = new();
             adapter.Fill(table);

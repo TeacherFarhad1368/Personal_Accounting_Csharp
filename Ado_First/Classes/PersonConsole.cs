@@ -17,7 +17,7 @@ internal partial class ConsoleService
         {
             PersonCategoryId = Convert.ToInt32(values[4].ToString().TrimStart('[').TrimEnd(']')),
             BirthDate = null,
-            Email= values[2].ToString().TrimStart('[').TrimEnd(']'),
+            Email= string.IsNullOrEmpty(values[2].ToString().TrimStart('[').TrimEnd(']')) ? null : values[2].ToString().TrimStart('[').TrimEnd(']'),
             FullName = values[0].ToString().TrimStart('[').TrimEnd(']'),
             Mobile = values[1].ToString().TrimStart('[').TrimEnd(']'), 
         };
@@ -32,15 +32,18 @@ internal partial class ConsoleService
                         Convert.ToInt32(strings[1]), 
                         Convert.ToInt32(strings[2])
                         );
-            var res = personService.Insert(model);
-            if(res.Success) Console.WriteLine("Success");
-            Console.WriteLine(res.Message);
-        } 
-      }
+        }
+        model.BirthDate = null;
+        var res = personService.Insert(model);
+        if (res.Success) Console.WriteLine("Success");
+        Console.WriteLine(res.Message);
+        RunApplication();
+    }
     public void GetAllPerson()
     {
         var table = personService.GetAll();
         foreach (DataRow row in table.Rows)
-            Console.WriteLine($"{row["Id"]} \t {row["FullName"]} \t {row["Mobile"]} \t {row["Email"]} \t {row["BirthDate"]} \t {row["CreateDate"]}");
+            Console.WriteLine($"{row["Id"]} \t {row["FullName"]} \t {row["Mobile"]} \t {row["Email"]} \t {row["BirthDate"]} \t {row["CategoryTitle"]} \t {row["CreateDate"]}");
+        RunApplication();
     }
 }
