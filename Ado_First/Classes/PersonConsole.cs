@@ -24,17 +24,75 @@ internal partial class ConsoleService
         string date = values[3].ToString().TrimStart('[').TrimEnd(']');
         if (!string.IsNullOrEmpty(date))
         {
-            string[] strings = date.Split(':');
-            if (strings.Length == 3)
-                model.BirthDate = 
-                    new DateTime(
-                        Convert.ToInt32(strings[0]), 
-                        Convert.ToInt32(strings[1]), 
-                        Convert.ToInt32(strings[2])
-                        );
+            try
+            {
+                string[] strings = date.Split(':');
+                if (strings.Length == 3)
+                    model.BirthDate =
+                        new DateTime(
+                            Convert.ToInt32(strings[0]),
+                            Convert.ToInt32(strings[1]),
+                            Convert.ToInt32(strings[2])
+                            );
+            }
+            catch
+            {
+                model.BirthDate = null;
+            }
         }
-        model.BirthDate = null;
+        else
+            model.BirthDate = null;
         var res = personService.Insert(model);
+        if (res.Success) Console.WriteLine("Success");
+        Console.WriteLine(res.Message);
+        RunApplication();
+    }
+    public void EditPerson()
+    {
+        Console.WriteLine("ba formate zir maghadir ro vared kon");
+        Console.WriteLine("[full name]-[mobile]-[email]-[tavalod= yyyy:mm:dd]-[person Category Id]-[Id]");
+        var val = Console.ReadLine();
+        string[] values = val.Split("-");
+        UpdatePerson model = new UpdatePerson
+        {
+            PersonCategoryId = Convert.ToInt32(values[4].ToString().TrimStart('[').TrimEnd(']')),
+            BirthDate = null,
+            Email = string.IsNullOrEmpty(values[2].ToString().TrimStart('[').TrimEnd(']')) ? null : values[2].ToString().TrimStart('[').TrimEnd(']'),
+            FullName = values[0].ToString().TrimStart('[').TrimEnd(']'),
+            Mobile = values[1].ToString().TrimStart('[').TrimEnd(']'),
+            Id = Convert.ToInt32(values[5].ToString().TrimStart('[').TrimEnd(']'))
+        };
+        string date = values[3].ToString().TrimStart('[').TrimEnd(']');
+        if (!string.IsNullOrEmpty(date))
+        {
+            try
+            {
+                string[] strings = date.Split(':');
+                if (strings.Length == 3)
+                    model.BirthDate =
+                        new DateTime(
+                            Convert.ToInt32(strings[0]),
+                            Convert.ToInt32(strings[1]),
+                            Convert.ToInt32(strings[2])
+                            );
+            }
+            catch
+            {
+                model.BirthDate = null;
+            }
+        }
+        else
+            model.BirthDate = null;
+        var res = personService.Update(model);
+        if (res.Success) Console.WriteLine("Success");
+        Console.WriteLine(res.Message);
+        RunApplication();
+    }
+    public void DeletePerson()
+    {
+        Console.WriteLine("Id Shakse Morede Nazar Ra Vared Konid"); 
+        int id = Convert.ToInt32(Console.ReadLine());
+        var res = personService.Delete(id);
         if (res.Success) Console.WriteLine("Success");
         Console.WriteLine(res.Message);
         RunApplication();

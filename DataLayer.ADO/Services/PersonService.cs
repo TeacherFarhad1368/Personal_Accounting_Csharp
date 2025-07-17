@@ -10,22 +10,68 @@ public class PersonService
     {
         try
         {
-            SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
-            connection.Open();
-            string query = $"Insert Into People([FullName],[Mobile]";
+            string command = $"Insert Into People([FullName],[Mobile]";
             if(!string.IsNullOrEmpty(model.Email))
-                query = query + $",[Email]";
+                command = command + $",[Email]";
             if (model.BirthDate != null)
-                query = query + $",[BirthDate]";
-            query = query + $",[PersonCategoryId]) Values('{model.FullName}', '{model.Mobile}'";
+                command = command + $",[BirthDate]";
+            command = command + $",[PersonCategoryId]) Values('{model.FullName}', '{model.Mobile}'";
             if (!string.IsNullOrEmpty(model.Email))
-                query = query + $", '{model.Email}'";
+                command = command + $", '{model.Email}'";
             if (model.BirthDate != null)
-                query = query + $", '{model.BirthDate}'";
-            query = query + $", '{model.PersonCategoryId}')";
-                    SqlCommand command = new SqlCommand(query, connection);
-            command.ExecuteNonQuery();
-            connection.Close();
+                command = command + $", '{model.BirthDate}'";
+            command = command + $", '{model.PersonCategoryId}')";
+            using(SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2))
+            using (var adapter = new SqlDataAdapter(command, connection))
+            {
+                connection.Open();
+                adapter.InsertCommand = new SqlCommand(command, connection);
+                int x = Convert.ToInt32( adapter.InsertCommand.ExecuteScalar());
+            }
+            return OperationResult.Succeded();
+        }
+        catch (Exception x)
+        {
+            return OperationResult.Faild(x.Message);
+        }
+    }
+    public OperationResult Update(UpdatePerson model)
+    {
+        try
+        {
+            string command = $"Update People SET FullName = '{model.FullName}' ,Mobile = '{model.Mobile}' ,";
+            if (!string.IsNullOrEmpty(model.Email))
+                command = command + $"Email = '{model.Email}',";
+            if (model.BirthDate != null)
+                command = command + $"BirthDate = '{model.BirthDate}' ,";
+            command = command + $"PersonCategoryId = {model.PersonCategoryId} WHERE (Id = {model.Id})";
+            
+            using (SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2))
+            using (var adapter = new SqlDataAdapter(command, connection))
+            {
+                connection.Open();
+                adapter.UpdateCommand = new SqlCommand(command, connection);
+                int x = adapter.InsertCommand.ExecuteNonQuery();
+            }
+            return OperationResult.Succeded();
+        }
+        catch (Exception x)
+        {
+            return OperationResult.Faild(x.Message);
+        }
+    }
+    public OperationResult Delete(int id)
+    {
+        try
+        {
+            string command = $"DELETE FROM People WHERE Id = {id}";
+            using (SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2))
+            using (var adapter = new SqlDataAdapter(command, connection))
+            {
+                connection.Open();
+                adapter.DeleteCommand = new SqlCommand(command, connection);
+                adapter.InsertCommand.ExecuteNonQuery();
+            }
             return OperationResult.Succeded();
         }
         catch (Exception x)
