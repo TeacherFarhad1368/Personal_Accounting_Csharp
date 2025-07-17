@@ -51,7 +51,7 @@ public class PersonService
             {
                 connection.Open();
                 adapter.UpdateCommand = new SqlCommand(command, connection);
-                int x = adapter.InsertCommand.ExecuteNonQuery();
+                int x = adapter.UpdateCommand.ExecuteNonQuery();
             }
             return OperationResult.Succeded();
         }
@@ -70,7 +70,7 @@ public class PersonService
             {
                 connection.Open();
                 adapter.DeleteCommand = new SqlCommand(command, connection);
-                adapter.InsertCommand.ExecuteNonQuery();
+                adapter.DeleteCommand.ExecuteNonQuery();
             }
             return OperationResult.Succeded();
         }

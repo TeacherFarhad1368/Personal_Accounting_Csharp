@@ -3,6 +3,7 @@ using Accounting.Models.PersonModels;
 using DataLayer.ADO;
 using DataLayer.ADO.Services;
 using System.Data;
+using Utilities.DateUtils;
 namespace Ado_First.Classes;
 internal partial class ConsoleService
 {
@@ -22,26 +23,7 @@ internal partial class ConsoleService
             Mobile = values[1].ToString().TrimStart('[').TrimEnd(']'), 
         };
         string date = values[3].ToString().TrimStart('[').TrimEnd(']');
-        if (!string.IsNullOrEmpty(date))
-        {
-            try
-            {
-                string[] strings = date.Split(':');
-                if (strings.Length == 3)
-                    model.BirthDate =
-                        new DateTime(
-                            Convert.ToInt32(strings[0]),
-                            Convert.ToInt32(strings[1]),
-                            Convert.ToInt32(strings[2])
-                            );
-            }
-            catch
-            {
-                model.BirthDate = null;
-            }
-        }
-        else
-            model.BirthDate = null;
+        model.BirthDate = DateConvertor.ToEnglishDateTime(date);
         var res = personService.Insert(model);
         if (res.Success) Console.WriteLine("Success");
         Console.WriteLine(res.Message);
@@ -63,26 +45,7 @@ internal partial class ConsoleService
             Id = Convert.ToInt32(values[5].ToString().TrimStart('[').TrimEnd(']'))
         };
         string date = values[3].ToString().TrimStart('[').TrimEnd(']');
-        if (!string.IsNullOrEmpty(date))
-        {
-            try
-            {
-                string[] strings = date.Split(':');
-                if (strings.Length == 3)
-                    model.BirthDate =
-                        new DateTime(
-                            Convert.ToInt32(strings[0]),
-                            Convert.ToInt32(strings[1]),
-                            Convert.ToInt32(strings[2])
-                            );
-            }
-            catch
-            {
-                model.BirthDate = null;
-            }
-        }
-        else
-            model.BirthDate = null;
+        model.BirthDate = DateConvertor.ToEnglishDateTime(date);
         var res = personService.Update(model);
         if (res.Success) Console.WriteLine("Success");
         Console.WriteLine(res.Message);
@@ -101,7 +64,7 @@ internal partial class ConsoleService
     {
         var table = personService.GetAll();
         foreach (DataRow row in table.Rows)
-            Console.WriteLine($"{row["Id"]} \t {row["FullName"]} \t {row["Mobile"]} \t {row["Email"]} \t {row["BirthDate"]} \t {row["CategoryTitle"]} \t {row["CreateDate"]}");
+            Console.WriteLine($"{row["Id"]} \t {row["FullName"]} \t {row["Mobile"]} \t {row["Email"]} \t {DateConvertor.ToPersianDate(row["BirthDate"].ToString())} \t {row["CategoryTitle"]} \t {DateConvertor.ToPersianDate(row["CreateDate"].ToString())}");
         RunApplication();
     }
 }

@@ -12,6 +12,8 @@ internal partial class ConsoleService
         "(Edit PC : epc )",
         "(Delete PC : dpc )",
         "(Create Person : cp )",
+        "(Update Person : up )",
+        "(Delete Person : dp )",
         "(Get All Person : gap )",
         "(Close Application : end)",
         "(Clear Console : clear)",
@@ -51,6 +53,12 @@ internal partial class ConsoleService
                 break;
             case "cp":
                 CreatePerson();
+                break;
+            case "up":
+                EditPerson();
+                break;
+            case "dp":
+                DeletePerson();
                 break;
             case "gap":
                 GetAllPerson();
