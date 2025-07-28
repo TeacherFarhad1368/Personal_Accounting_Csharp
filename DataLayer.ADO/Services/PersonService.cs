@@ -6,6 +6,11 @@ using Utilities.Opeartions;
 namespace DataLayer.ADO.Services;
 public class PersonService
 {
+    public DataTable Persons { get; set; } = new();
+    public PersonService()
+    {
+        GetDataTable();
+    }
     public OperationResult Insert(InsertPerson model)
     {
         try
@@ -28,6 +33,7 @@ public class PersonService
                 adapter.InsertCommand = new SqlCommand(command, connection);
                 int x = Convert.ToInt32( adapter.InsertCommand.ExecuteScalar());
             }
+            GetDataTable();
             return OperationResult.Succeded();
         }
         catch (Exception x)
@@ -53,6 +59,7 @@ public class PersonService
                 adapter.UpdateCommand = new SqlCommand(command, connection);
                 int x = adapter.UpdateCommand.ExecuteNonQuery();
             }
+            GetDataTable();
             return OperationResult.Succeded();
         }
         catch (Exception x)
@@ -72,6 +79,7 @@ public class PersonService
                 adapter.DeleteCommand = new SqlCommand(command, connection);
                 adapter.DeleteCommand.ExecuteNonQuery();
             }
+            GetDataTable();
             return OperationResult.Succeded();
         }
         catch (Exception x)
@@ -79,14 +87,15 @@ public class PersonService
             return OperationResult.Faild(x.Message);
         }
     }
-    public DataTable GetAll()
+    public DataTable GetAll() => Persons;    
+    public void GetDataTable()
     {
         string command = "Select x.Id,x.FullName,x.Mobile,x.Email,x.BirthDate,s.Title As CategoryTitle,x.CreateDate From PersonCategories AS s Inner JOIN People as x ON x.PersonCategoryId = s.Id";
         using (var adapter = new SqlDataAdapter(command, DataBaseConstant.connectionString2))
         {
-            DataTable table = new();
-            adapter.Fill(table);
-            return table;   
+            DataTable data = new();
+            adapter.Fill(data);
+            Persons = data; 
         }
     }
 }

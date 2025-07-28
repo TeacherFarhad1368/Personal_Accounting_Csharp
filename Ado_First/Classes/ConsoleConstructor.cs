@@ -15,6 +15,7 @@ internal partial class ConsoleService
         "(Update Person : up )",
         "(Delete Person : dp )",
         "(Get All Person : gap )",
+        "(Get All Data : gad )",
         "(Close Application : end)",
         "(Clear Console : clear)",
     };
@@ -62,6 +63,9 @@ internal partial class ConsoleService
                 break;
             case "gap":
                 GetAllPerson();
+                break;
+            case "gad":
+                GetAllData();
                 break;
             default:
                 Console.ForegroundColor = ConsoleColor.Blue;

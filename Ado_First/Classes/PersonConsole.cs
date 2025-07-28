@@ -8,7 +8,8 @@ namespace Ado_First.Classes;
 internal partial class ConsoleService
 {
     PersonService personService = new PersonService();
-     public void CreatePerson()
+    PeopleDatasetService peopleDatasetService = new PeopleDatasetService();
+    public void CreatePerson()
       {
         Console.WriteLine("ba formate zir maghadir ro vared kon");
         Console.WriteLine("[full name]-[mobile]-[email]-[tavalod= yyyy:mm:dd]-[person Category Id]");
@@ -66,5 +67,21 @@ internal partial class ConsoleService
         foreach (DataRow row in table.Rows)
             Console.WriteLine($"{row["Id"]} \t {row["FullName"]} \t {row["Mobile"]} \t {row["Email"]} \t {DateConvertor.ToPersianDate(row["BirthDate"].ToString())} \t {row["CategoryTitle"]} \t {DateConvertor.ToPersianDate(row["CreateDate"].ToString())}");
         RunApplication();
+    }
+    public void GetAllData()
+    {
+        var dataSet = peopleDatasetService.GetData(); 
+        foreach (DataRow row in dataSet.Tables["People"].Rows)
+        {
+            Console.WriteLine($"{row["Id"]} \t {row["FullName"]} \t {row["Mobile"]} \t {row["Email"]} \t {DateConvertor.ToPersianDate(row["BirthDate"].ToString())} \t {row["CreateDate"]}");
+            if (row.GetParentRow("FK_PersonCategory") is DataRow parentRow)
+            {
+                Console.WriteLine($"\t Category: {parentRow["Title"]}");
+            }
+        }
+        foreach (DataRow categoryRow in dataSet.Tables["PersonCategories"].Rows)
+        {
+            Console.WriteLine($"Category: {categoryRow["Id"]} \t {categoryRow["Title"]}");
+        }
     }
 }
