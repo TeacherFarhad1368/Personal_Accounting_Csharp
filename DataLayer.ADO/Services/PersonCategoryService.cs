@@ -1,4 +1,5 @@
-﻿using Accounting.Models.PersonCategoryModels;
+﻿using Accounting.Models.ExpenseCategoryModels;
+using Accounting.Models.PersonCategoryModels;
 using System.Data.SqlClient;
 using Utilities.Opeartions;
 
@@ -178,5 +179,28 @@ public class PersonCategoryService
         {
             return OperationResult.Faild($"Person Category By Id :  {id} is Not FOUND");
         }
+    }
+}
+public class ExpenseCategoryService
+{
+    public OperationResult Insert(InsertExpenseCategory model)
+    {
+        if (string.IsNullOrEmpty(model.Title)) return OperationResult.Faild("Title Nemitoone Khali Bashe");
+        else if (model.Title.Length > 250) return OperationResult.Faild("Maximom Length For Title is 255 charecter");
+        else
+            try
+            {
+                SqlConnection connection = new SqlConnection(DataBaseConstant.connectionString2);
+                connection.Open();
+                string query = $"Exec CreateExpenseCategory @Title = '{model.Title}' ";
+                if(model.ParentId != null) query += $", @ParentId = {model.ParentId}";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.ExecuteNonQuery();
+                return OperationResult.Succeded();
+            }
+            catch (Exception x)
+            {
+                return OperationResult.Faild(x.Message);
+            }
     }
 }

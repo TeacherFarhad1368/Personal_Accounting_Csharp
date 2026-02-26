@@ -16,6 +16,7 @@ internal partial class ConsoleService
         "(Delete Person : dp )",
         "(Get All Person : gap )",
         "(Get All Data : gad )",
+        "(Create Expense Category : cec )",
         "(Close Application : end)",
         "(Clear Console : clear)",
     };
@@ -32,6 +33,9 @@ internal partial class ConsoleService
         {
             case "gapc":
                 GetAllPersonCategory();
+                break;
+            case "cec":
+                CreateExpenseCategory();
                 break;
             case "gipc":
                 GetPersonCategoryById();

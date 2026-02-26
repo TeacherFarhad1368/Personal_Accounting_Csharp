@@ -31,7 +31,7 @@ public class PersonService
             {
                 connection.Open();
                 adapter.InsertCommand = new SqlCommand(command, connection);
-                int x = Convert.ToInt32( adapter.InsertCommand.ExecuteScalar());
+                int x = Convert.ToInt32(adapter.InsertCommand.ExecuteScalar());
             }
             GetDataTable();
             return OperationResult.Succeded();
